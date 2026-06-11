@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion de Présence</title>
+    <link rel="stylesheet" href="Gest_abs.css">
+</head>
+<body>
+    <header>
+        <h1 id="title">Gestion de Présence</h1>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="card">
+                 <h2>Scanner votre QR Code</h2>
+        	 <button id="scan-btn"> Scanner QR</button>          
+                 <div id="reader" style="width:100%; max-width:300px; margin:auto; display:none;"></div>
+            </div>
+            <div class="card">
+                <h2>Historique des présences</h2>
+                <p>Aucune présence enregistrée pour le moment.</p>
+            </div>
+            <div class="card">
+                <h2>Informations Étudiants</h2>
+                <p>Liste complète des étudiants ici.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Projet Gestion de Présence</p>
+    </footer>
+    <script src="Gest_abs.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>j
+</body>
+</html>

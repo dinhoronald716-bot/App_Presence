@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Scanner QR</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    font-family: Arial;
+    color: white;
+}
+
+/* Bouton retour */
+.back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0,0,0,0.6);
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* Zone scanner */
+#reader {
+    width: 300px;
+    height: 300px;
+    margin: 100px auto;
+    position: relative;
+    border: 2px solid white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Coins */
+.corner {
+    width: 20px;
+    height: 20px;
+    border: 4px solid #3b82f6;
+    position: absolute;
+}
+
+.tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+.tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+.bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+.br { bottom: 0; right: 0; border-left: none; border-top: none; }
+
+/* Ligne scan */
+.scan-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: red;
+    animation: scan 2s infinite;
+}
+
+@keyframes scan {
+    0% { top: 0; }
+    50% { top: 100%; }
+    100% { top: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<button class="back" onclick="window.location.href='/'">⬅</button>
+
+<div id="reader">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <div class="scan-line"></div>
+</div>
+
+<script>
+const html5QrCode = new Html5Qrcode("reader");
+let scanned = false;
+
+html5QrCode.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+
+    (qrCodeMessage) => {
+
+        if (scanned) return;
+        scanned = true;
+
+        fetch("http://127.0.0.1:5000/scan", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ qr: qrCodeMessage })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert("Présence enregistrée ✅");
+        });
+
+        html5QrCode.stop();
+    }
+).catch(err => {
+    alert("Erreur caméra : " + err);
+});
+</script>
+
+</body>
+</html>
